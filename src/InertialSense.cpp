@@ -800,3 +800,32 @@ bool InertialSense::OpenSerialPorts(const char* port, int baudRate)
 
     return m_comManagerState.serialPorts.size() != 0;
 }
+
+bool InertialSense::isBootLoaderMode(const std::string& comPort)
+{
+    bool result;
+
+    bootloader_state_t state;
+
+    memset(&state.serial, 0, sizeof(state.serial));
+    serialPortSetPort(&state.serial, comPort.c_str());
+    serialPortPlatformInit(&state.serial);
+    state.param.port = &state.serial;
+    strncpy(state.serial.port, comPort.c_str(), 64);
+    serialPortOpen(&state.serial, state.serial.port, IS_BAUD_RATE_BOOTLOADER, 1);
+
+    result = ::isBootloaderMode(&(state.serial));
+
+    serialPortClose(&state.serial);
+
+    return result;    
+}
+
+int InertialSense::GetSerialFd()
+{
+    if(m_comManagerState.serialPorts.size() != 0 && serialPortIsOpen(&m_comManagerState.serialPorts[0])) {
+        return ((int*)m_comManagerState.serialPorts[0].handle)[1];
+    } else {
+        return -1;
+    }
+}

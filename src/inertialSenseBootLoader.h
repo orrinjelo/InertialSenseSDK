@@ -119,6 +119,8 @@ Disables the bootloader and goes back to program mode
 */
 int disableBootloader(serial_port_t* port, char* error, int errorLength);
 
+int isBootloaderMode(serial_port_t* port);
+
 #ifdef __cplusplus
 }
 #endif

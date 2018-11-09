@@ -1575,3 +1575,11 @@ int disableBootloader(serial_port_t* port, char* error, int errorLength)
 	result |= disableBootloaderInternal(port, error, errorLength, IS_BAUD_RATE_BOOTLOADER_RS232);
 	return result;
 }
+
+int isBootloaderMode(serial_port_t* port)
+{
+    // detect if device is already in bootloader mode
+    bootload_params_t p = { 0 };
+    p.port = port;
+    return bootloaderHandshake(&p);
+}

@@ -275,6 +275,12 @@ public:
 	void SetTimeoutFlushLoggerSeconds(time_t timeoutFlushLoggerSeconds) { m_logger.SetTimeoutFlushSeconds(timeoutFlushLoggerSeconds); }
 
 	/**
+	 * Added methods for use at Fortem Technologies
+	 */
+    bool isBootLoaderMode(const std::string&);
+    int GetSerialFd();
+
+	/**
 	* Bootload a file - if the bootloader fails, the device stays in bootloader mode and you must call BootloadFile again until it succeeds. If the bootloader gets stuck or has any issues, power cycle the device.
 	* Please ensure that all other connections to the com port are closed before calling this function.
 	* @param the com port to bootload, can be comma separated for multiple
